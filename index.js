@@ -11,16 +11,16 @@ class Parsing {
 		else {
 			console.log('Parsing: can not get ' + path.join(filepath, manifestFile) + '.');
 		}
-		console.log(this.lines);
 		this.currLineNum = 0;
 		this.totalLines = this.lines.length;
-		// this.user.select = [];
-		// this.user.abandon = [];
+		this.user = {
+			select: [],
+			abandon: []
+		};
 	}
 
 	getNext() {
 		this.currLineNum++;
-		console.log(this.currLineNum);
 		if (this.currLineNum > this.totalLines) {
 			return null;
 		} else {
