@@ -126,28 +126,46 @@ class Parsing {
 	}
 
 	_selected(str) {
-
+		return this.user.select.indexOf(str) !== -1;
 	}
 
 	_abandon() {
-
+		return this.user.abandon.indexOf(str) !== -1;
 	}
 
 	_check(str) {
 		if (this._checkJSON(str)) { //如果语句中含有json
 			if (this._checkChoice(str)) { // c2.wav {'c5.wav': ['左'], 'c6.wav': ['右']} 01.wav
+				if (this._selected(this._checkChoice(str).flag)) {
+					//进入choice
+				} else {
+					this.getNext();
+				}
 				console.log("_checkChoice" + JSON.stringify(this._checkChoice(str)));
 			} else if (this._checkChoiceNoDefault(str)) { //c2.wav {'c5.wav': ['左'], 'c6.wav': ['右']}
+				if (this._selected(this._checkChoiceNoDefault(str))) {
+					//进入choice
+				} else {
+					this.getNext();
+				}
 				console.log("_checkChoiceNoDefault" + JSON.stringify(this._checkChoiceNoDefault(str)));
 			} else if (this._checkChoiceOnlyWithDefault(str)) { //{'c5.wav': ['左'], 'c6.wav': ['右']} 01.wav
+
+
 				console.log("_checkChoiceOnlyWithDefault" + JSON.stringify(this._checkChoiceOnlyWithDefault(str)));
 			} else if (this._checkChoiceOnly(str)) { //{'c5.wav': ['左'], 'c6.wav': ['右']}
 				console.log("_checkChoiceOnly" + JSON.stringify(this._checkChoiceOnly(str)));
 			}
 		} else { //如果语句中不含有json
 			if (this._checkIfSingle(str)) { //c9.wav end1.wav
+				if (this._selected(this._checkIfSingle(str).flag)) {
+					this.user.select.push(this._checkIfSingle(str).flag);
+				} else {
+					this.getNext();
+				}
 				console.log("_checkIfSingle" + JSON.stringify(this._checkIfSingle(str)));
 			} else if (this._checkSingle(str)) { //c9.wav
+				this.user.select.push(this._checkSingle(str).flag);
 				console.log("_checkSingle" + JSON.stringify(this._checkSingle(str)));
 			} else if (this._checkShare(str)) { //$share
 				console.log("_checkShare: share 模式。");
