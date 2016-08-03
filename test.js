@@ -1,5 +1,7 @@
 const Parse = require('.');
-var parse = new Parse('manifest.rc');
+const dir = __dirname;
+
+var parse = new Parse(dir);
 
 parse.init();
 // console.log(parse.getNext());
