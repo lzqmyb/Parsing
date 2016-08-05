@@ -212,9 +212,10 @@ class Parsing {
 						this.getNext();
 					}
 				} else if (this._checkSingle(str)) { //c9.wav
-					console.log("_checkSingle " + JSON.stringify(this._checkSingle(str)));
+					console.log("_checkSingle " + JSON.stringify(this.result));
 					this.user.select.push(this.result.sound);
 					this.play.voice(this.result.sound).then(msg => {
+						// console.log(msg);
 						this.getNext();
 					});
 				} else if (this._checkShare(str)) { //$share

@@ -15,8 +15,8 @@ class PlayVoice {
 		}
 		mqtt.on('message', (topic, message) => {
 			let fileId
-			switch (topic) {
-			case /^sound_manager[/].*[/]complete\b/.test(topic):
+			console.log(topic);
+			if (topic.indexOf('complete')) {
 				fileId = topic.split('/')[1];
 				if (fileId == this.fileId) {
 					let fileOptions = {
@@ -26,12 +26,9 @@ class PlayVoice {
 					redis.set(this.fileId, JSON.stringify(fileOptions));
 					evt.emit('play-voice-to-end', 'complete');
 				}
-				break;
-			case /^sound_manager[/].*[/]terminate\b/.test(topic):
+			} else if (topic.indexOf('terminate')) {
 				fileId = topic.split('/')[1];
 				if (fileId == this.fileId) {
-					console.log('请求进入terminate');
-					console.log(message.toString());
 					let fileOptions = {
 						file: this.soundOptions.file,
 						t: JSON.parse(message.toString()).progress
@@ -39,11 +36,8 @@ class PlayVoice {
 					redis.set(this.fileId, JSON.stringify(fileOptions));
 					evt.emit('play-voice-to-end', 'terminate');
 				}
-				break;
-			case 'interaction_story/pause':
-				evt.emit('play-voice-to-end', 'terminate');
+			} else if (topic.indexOf('pause')) {
 				evt.emit('play-voice-to-end', 'pause');
-				break;
 			}
 		});
 	}
@@ -61,13 +55,13 @@ class PlayVoice {
 				t: 0
 			}
 			redis.set(this.fileId, JSON.stringify(fileOptions));
-		})
+		});
 		return new Promise((resolve, inject) => {
 			evt.on('play-voice-to-end', (msg) => {
+				// console.log(msg);
 				//complete: sound_manager finish play
 				//terminate: sound_manager terminate
 				//pause: interaction_story gives a pause
-				console.log(msg);
 				resolve(msg);
 			});
 		});
