@@ -12,6 +12,6 @@
 // let choice =new Choice(1,2,1,3,85,6);
 
 const util = require('./');
-let playVoice =new util.PlayVoice('测试5');
+let playVoice = new util.PlayVoice('测试5');
 playVoice.play('nihao.wav');
 console.log('播放结束');
