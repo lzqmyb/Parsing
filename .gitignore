@@ -1,2 +1,3 @@
 .vscode
+.jshintrc
 node_modules
