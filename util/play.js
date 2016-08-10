@@ -14,7 +14,7 @@ class PlayVoice {
       storyName: storyName
     }
     mqtt.on('message', (topic, message) => {
-      let fileId
+      let fileId;
       console.log(topic);
       if (topic.indexOf('complete')) {
         fileId = topic.split('/')[1];
@@ -26,7 +26,8 @@ class PlayVoice {
           redis.set(this.fileId, JSON.stringify(fileOptions));
           evt.emit('play-voice-to-end', 'complete');
         }
-      } else if (topic.indexOf('terminate')) {
+      } else if (topic.
+        indexOf('terminate')) {
         fileId = topic.split('/')[1];
         if (fileId == this.fileId) {
           let fileOptions = {
